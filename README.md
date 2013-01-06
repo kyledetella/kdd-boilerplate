@@ -4,6 +4,6 @@ A simple, clean stack for rapid upstart and quick prototyping.
 
 Install
 -------
-Dependencies declared in $ package.json will be installed by running:
+Dependencies declared in <code>package.json</code> will be installed by running:
 
     $ npm install
