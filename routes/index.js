@@ -3,5 +3,5 @@
  */
 
 exports.index = function(req, res) {
-	res.render('views/blank', { title: 'KDD' });
+	res.render('views/blank', { title: 'KDD', dev: false });
 };
