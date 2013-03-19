@@ -20,7 +20,7 @@ function($, _, Backbone, Handlebars, app) {
     },
 
     render: function() {
-      app.$injectionPoint.html(this.template({message: 'I am generated in the indexView'}))
+      app.$injectionPoint.html(this.template({message: 'I am generated in the indexView'}));
     }
 
   });
