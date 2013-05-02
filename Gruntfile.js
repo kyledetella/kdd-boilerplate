@@ -43,6 +43,10 @@ module.exports = function(grunt) {
         cmd: 'git add .'
       },
 
+      git_add_u: {
+        cmd: 'git add -u'
+      },
+
       git_commit: {
         cmd: function(m) { return f('git commit -m "%s"', m); }
       },
@@ -65,14 +69,14 @@ module.exports = function(grunt) {
   //
   grunt.registerTask('release', 'Ship it.', function(version) {
 
-    // var curVersion = grunt.config.get('version');
-    // version = semver.inc(curVersion, version) || version;
+    var curVersion = grunt.config.get('version');
+    version = semver.inc(curVersion, 'minor') || 'minor';
 
-    // if (!semver.valid(version) || semver.lte(version, curVersion)) {
-    //   grunt.fatal('invalid version dummy');
-    // }
+    if (!semver.valid(version) || semver.lte(version, curVersion)) {
+      grunt.fatal('invalid version dummy');
+    }
 
-    // grunt.config.set('version', version);
+    grunt.config.set('version', version);
 
     grunt.task.run([
       'clean',
@@ -80,6 +84,18 @@ module.exports = function(grunt) {
       'exec:git_add',
       'exec:git_commit',
       'exec:git_push'
+    ]);
+  });
+
+
+  //
+  // Clean Project
+  //
+  grunt.registerTask('sweep', 'Clean up files', function() {
+    grunt.task.run([
+      'clean',
+      'requirejs',
+      'exec:git_add_u'
     ]);
   });
 
