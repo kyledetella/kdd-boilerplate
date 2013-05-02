@@ -104,33 +104,58 @@ module.exports = function(grunt) {
   // Enter as grunt release:minor (or major, patch, build)
   // This will re-write and update package.json
   //
-  grunt.registerTask('release', 'Ship (dev & production)', function(version) {
+  grunt.registerTask('release', 'Ship (dev & production)', function(version, message) {
 
     var _ = grunt.util._,
         pkg = grunt.file.readJSON('package.json'),
-        curVersion = pkg.version;
+        curVersion = pkg.version,
+        commitMessage;
 
+    //
+    // If no version is passed in, default bump to minor
+    //
     if(!version) version = 'minor';
 
+    //
+    // Increment version using semver
+    //
     version = semver.inc(curVersion, version) || version;
 
+    //
+    // If version is invalid, throw an error
+    //
     if (!semver.valid(version) || semver.lte(version, curVersion)) {
       grunt.fatal('invalid version dummy');
     }
 
-    grunt.config.set('version', version);
+    //grunt.config.set('version', version);
 
+    //
+    // Prep the re-write of our package.json and update the version
+    //
     pkg = JSON.stringify(_.extend(pkg, {
       version: version
     }), null, 2);
+
+    //
+    // Re-write package.json
+    //
     grunt.file.write('package.json', pkg);
 
+    //
+    // If no commit message is passed in, default to simply our version #
+    //
+    commitMessage = message || version;
+
+    //
+    // Run our ordered tasks
+    //
     grunt.task.run([
       'clean',
       'requirejs',
       'less:production',
       'exec:git_add',
-      'exec:git_commit:'+ version,
+      'exec:git_commit:'+ commitMessage,
       'exec:git_push'
     ]);
   });
