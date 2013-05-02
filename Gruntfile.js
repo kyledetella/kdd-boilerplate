@@ -1,4 +1,7 @@
-/*global module:false*/
+var semver = require('semver'),
+    f = require('util').format;
+
+
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -6,15 +9,15 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
-    meta: {
-      version: '0.1.0',
-      banner: '/*! App - v<%= meta.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '* http://PROJECT_WEBSITE/\n' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-        'Kyle DeTella / Trevor McNaughton; Licensed MIT */'
-    },
-    
+    version: grunt.file.readJSON('package.json').version,
+
+    banner: [
+      '/*!',
+      ' * kdd boilerplate <%= version %>',
+      ' * https://github.com/kyledetella/kdd-boilerplate',
+      ' */\n\n'
+    ].join('\n'),
+
     requirejs: {
       compile: {
         options: {
@@ -24,17 +27,74 @@ module.exports = function(grunt) {
           out: "public/js/build/app.min.js"
         }
       }
+    },
+
+    sed: {
+      version: {
+        pattern: '%VERSION%',
+        replacement: '<%= version %>',
+        path: ['<%= requirejs.compile.options.out %>']
+      }
+    },
+
+
+    exec: {
+      git_add: {
+        cmd: 'git add .'
+      },
+
+      git_commit: {
+        cmd: function(m) { return f('git commit -m "%s"', m); }
+      },
+
+      git_push: {
+        cmd: 'git push'
+      }
+    },
+
+
+    clean: {
+      dist: 'dist'
     }
 
   });
 
+
+  //
+  // Register Grunt Tasks
+  //
+  grunt.registerTask('release', 'Ship it.', function(version) {
+
+    // var curVersion = grunt.config.get('version');
+    // version = semver.inc(curVersion, version) || version;
+
+    // if (!semver.valid(version) || semver.lte(version, curVersion)) {
+    //   grunt.fatal('invalid version dummy');
+    // }
+
+    // grunt.config.set('version', version);
+
+    grunt.task.run([
+      'requirejs',
+      'exec:git_add',
+      'exec:git_commit',
+      'exec:git_push'
+    ]);
+  });
+
+
+  grunt.registerTask('default', 'build');
+  grunt.registerTask('build', ['requirejs','sed:version']);
+
+  //
   // Load npm tasks
+  //
+  grunt.loadNpmTasks('grunt-sed');
+  grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
-  // Default task.
-  grunt.registerTask('default', ['requirejs']);
 
-  // Build task
-  grunt.registerTask('build', ['requirejs']);
 
 };
