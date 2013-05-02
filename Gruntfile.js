@@ -66,10 +66,12 @@ module.exports = function(grunt) {
 
   //
   // Register Grunt Tasks
+  // Enter as grunt release:minor (or major, patch, build)
   //
   grunt.registerTask('release', 'Ship it.', function(version) {
 
-    var curVersion = grunt.config.get('version');
+    var pkg = grunt.file.readJSON('package.json'),
+        curVersion = grunt.config.get('version');
     version = semver.inc(curVersion, version) || version;
 
     if (!semver.valid(version) || semver.lte(version, curVersion)) {
@@ -77,6 +79,9 @@ module.exports = function(grunt) {
     }
 
     grunt.config.set('version', version);
+
+    pkg.version = version;
+    grunt.file.write('package.json', pkg);
 
     grunt.task.run([
       'clean',
