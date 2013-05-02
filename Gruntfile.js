@@ -58,7 +58,6 @@ module.exports = function(grunt) {
 
 
     clean: {
-      // dist: 'dist'
       clean: ["./public/dist"]
     },
 
@@ -86,16 +85,22 @@ module.exports = function(grunt) {
       }
     },
 
+    //
+    // Watch task to live update files & builds
+    //
     watch: {
       files: "./public/css/less/*",
       tasks: ["less"]
     }
-
   });
 
 
   //
   // Register Grunt Tasks
+  // ---------------------------
+
+
+  //
   // Enter as grunt release:minor (or major, patch, build)
   // This will re-write and update package.json
   //
@@ -125,7 +130,7 @@ module.exports = function(grunt) {
       'requirejs',
       'less:production',
       'exec:git_add',
-      'exec:git_commit',
+      'exec:git_commit:'+ version,
       'exec:git_push'
     ]);
   });
@@ -158,7 +163,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-less');
-
-
 
 };
