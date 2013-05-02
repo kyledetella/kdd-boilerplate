@@ -7,9 +7,9 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
 
-    pkg: grunt.file.readJSON('package.json'),
+    // pkg: grunt.file.readJSON('package.json'),
 
-    version: grunt.file.readJSON('package.json').version,
+    // version: grunt.file.readJSON('package.json').version,
 
     banner: [
       '/*!',
@@ -67,12 +67,13 @@ module.exports = function(grunt) {
   //
   // Register Grunt Tasks
   // Enter as grunt release:minor (or major, patch, build)
+  // This will re-write and update package.json
   //
   grunt.registerTask('release', 'Ship it.', function(version) {
 
     var _ = grunt.util._,
         pkg = grunt.file.readJSON('package.json'),
-        curVersion = grunt.config.get('version');
+        curVersion = pkg.version;
     version = semver.inc(curVersion, version) || version;
 
     if (!semver.valid(version) || semver.lte(version, curVersion)) {
@@ -84,7 +85,6 @@ module.exports = function(grunt) {
     pkg = JSON.stringify(_.extend(pkg, {
       version: version
     }), null, 2);
-
     grunt.file.write('package.json', pkg);
 
     grunt.task.run([
