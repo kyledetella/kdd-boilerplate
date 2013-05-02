@@ -1,7 +1,7 @@
 {
   "name": "KDD-Boilerplate",
   "description": "Basic node.js boilerplate",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "private": true,
   "dependencies": {
     "express": "3.x",
@@ -19,9 +19,10 @@
     "grunt-contrib-watch": "~0.2",
     "grunt-contrib-requirejs": "~0.4.0",
     "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-less": "~0.5.1",
     "semver": "~1.1.3"
   },
   "scripts": {
-    "build": "grunt build"
+    "start": "grunt watch"
   }
 }
