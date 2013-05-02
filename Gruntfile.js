@@ -24,7 +24,7 @@ module.exports = function(grunt) {
           baseUrl: "public/js",
           name: 'main',
           mainConfigFile: "public/js/main.js",
-          out: "public/js/build/app.min.js"
+          out: "public/dist/js/app.min.js"
         }
       }
     },
@@ -75,6 +75,7 @@ module.exports = function(grunt) {
     // grunt.config.set('version', version);
 
     grunt.task.run([
+      'clean',
       'requirejs',
       'exec:git_add',
       'exec:git_commit',
