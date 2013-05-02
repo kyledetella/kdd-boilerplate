@@ -70,7 +70,7 @@ module.exports = function(grunt) {
   grunt.registerTask('release', 'Ship it.', function(version) {
 
     var curVersion = grunt.config.get('version');
-    version = semver.inc(curVersion, 'minor') || 'minor';
+    version = semver.inc(curVersion, version) || version;
 
     if (!semver.valid(version) || semver.lte(version, curVersion)) {
       grunt.fatal('invalid version dummy');
