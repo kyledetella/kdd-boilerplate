@@ -1,7 +1,7 @@
 {
   "name": "KDD-Boilerplate",
   "description": "Basic node.js boilerplate",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "dependencies": {
     "express": "3.x",
