@@ -48,7 +48,7 @@ module.exports = function(grunt) {
       },
 
       git_push: {
-        cmd: 'git push'
+        cmd: 'git push origin deploys'
       }
     },
 
