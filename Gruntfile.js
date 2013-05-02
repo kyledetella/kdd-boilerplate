@@ -4,12 +4,9 @@ var semver = require('semver'),
 
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({
 
-    // pkg: grunt.file.readJSON('package.json'),
-
-    // version: grunt.file.readJSON('package.json').version,
+    buildDir: './public/dist',
 
     banner: [
       '/*!',
@@ -24,6 +21,7 @@ module.exports = function(grunt) {
           baseUrl: "public/js",
           name: 'main',
           mainConfigFile: "public/js/main.js",
+          banner: '<%= banner %>',
           out: "public/dist/js/app.min.js"
         }
       }
@@ -55,7 +53,6 @@ module.exports = function(grunt) {
         cmd: 'git push origin deploys'
       }
     },
-
 
     clean: {
       clean: ["./public/dist"]
@@ -97,11 +94,12 @@ module.exports = function(grunt) {
 
   //
   // Register Grunt Tasks
-  // ---------------------------
+  // --------------------------------------------------------
 
 
   //
   // Enter as grunt release:minor (or major, patch, build)
+  // To pass in a commit message: grunt:release:"Message"
   // This will re-write and update package.json
   //
   grunt.registerTask('release', 'Ship (dev & production)', function(version, message) {
@@ -179,14 +177,16 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['requirejs', 'less:development', 'sed:version']);
   grunt.registerTask('watch', ['less:development']);
 
+
+
   //
-  // Load npm tasks
-  //
+  // Load NPM Tasks and plugins
+  // --------------------------------------------------------
+  
   grunt.loadNpmTasks('grunt-sed');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-less');
-
 };
