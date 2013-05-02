@@ -1,6 +1,6 @@
 {
-  "name": "KDD-Boilerplate",
-  "description": "Basic node.js boilerplate",
+  "name": "kdd-prefab",
+  "description": "Basic project scaffolding and build process",
   "version": "4.0.0",
   "private": true,
   "dependencies": {
