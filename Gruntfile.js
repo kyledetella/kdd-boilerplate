@@ -70,7 +70,8 @@ module.exports = function(grunt) {
   //
   grunt.registerTask('release', 'Ship it.', function(version) {
 
-    var pkg = grunt.file.readJSON('package.json'),
+    var _ = grunt.util._,
+        pkg = grunt.file.readJSON('package.json'),
         curVersion = grunt.config.get('version');
     version = semver.inc(curVersion, version) || version;
 
@@ -80,7 +81,10 @@ module.exports = function(grunt) {
 
     grunt.config.set('version', version);
 
-    pkg.version = version;
+    pkg = JSON.stringify(_.extend(pkg, {
+      version: version
+    }), null, 2);
+
     grunt.file.write('package.json', pkg);
 
     grunt.task.run([
